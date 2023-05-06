@@ -1,58 +1,25 @@
-/* Player battlefield section */
 .player-battlefield {
-  display: inline-block;
-  width: 300px;
-  margin: 10px;
-  vertical-align: top;
+  margin: 20px;
+  display: flex;
+  flex-direction: column;
 }
 
-.player-battlefield h2 {
+.card-container {
+  margin-top: 10px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.card-container h3 {
   margin-top: 0;
 }
 
-.player-cards {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.search-container {
-  margin-top: 10px;
-  position: relative;
-}
-
-.search-container input[type="text"] {
+.card-container input[type="search"] {
   padding: 5px;
   font-size: 16px;
   border: 1px solid #ccc;
   border-radius: 4px;
   width: 100%;
-}
-
-.search-results {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  z-index: 1;
-  background-color: #fff;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-  max-height: 150px;
-  overflow-y: auto;
-}
-
-.search-results ul {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.search-results li {
-  padding: 5px;
-  cursor: pointer;
-}
-
-.search-results li:hover {
-  background-color: #f2f2f2;
+  margin-bottom: 5px;
 }

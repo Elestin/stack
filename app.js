@@ -1,101 +1,120 @@
-const gameState = {
-  player1: [],
-  player2: [],
-  player3: [],
-  player4: [],
-};
+// Initialize player containers and the stack container
+const playerContainers = document.querySelectorAll('.player-container');
+const stackContainer = document.querySelector('.stack-container');
 
-const stack = [];
-const log = [];
-
-function addCardToPlayer(playerId, cardName) {
-  const playerCards = gameState[playerId];
-  playerCards.push(cardName);
-
-  const playerCardsList = document.getElementById(`${playerId}-cards`);
-  const newCardItem = document.createElement('li');
-  newCardItem.textContent = cardName;
-  playerCardsList.appendChild(newCardItem);
-}
-
-function addCardToStack(cardName, playerId) {
-  stack.push({ card: cardName, player: playerId });
-
-  const stackCardsList = document.getElementById('stack-cards');
-  const newCardItem = document.createElement('li');
-  newCardItem.textContent = `${cardName} (${playerId})`;
-  stackCardsList.appendChild(newCardItem);
-}
-
-document.querySelectorAll('.player-battlefield').forEach(playerField => {
-  const playerId = playerField.id;
-  const cardInput = playerField.querySelector('input[type="text"]');
-  const searchContainer = playerField.querySelector('.search-container');
-  const searchInput = searchContainer.querySelector('input[type="search"]');
-  const searchResults = searchContainer.querySelector('.search-results');
-
-  cardInput.addEventListener('input', () => {
-    const cardName = cardInput.value.trim();
-
-    if (cardName.length === 0) {
-      return;
-    }
-
-    addCardToPlayer(playerId, cardName);
-    cardInput.value = '';
-  });
-
-  searchInput.addEventListener('input', () => {
-    const query = searchInput.value.trim();
-
-    if (query.length < 3) {
-      searchResults.innerHTML = '';
-      return;
-    }
-
-    const apiUrl = `https://api.scryfall.com/cards/autocomplete?q=${encodeURIComponent(query)}`;
-    fetch(apiUrl)
-      .then(response => response.json())
-      .then(data => {
-        const cards = data.data;
-
-        if (cards.length === 0) {
-          searchResults.innerHTML = '<p>No results found.</p>';
-          return;
-        }
-
-        const dropdownHtml = cards.map(cardName => {
-          return `<li><a href="#" data-card-name="${cardName}">${cardName}</a></li>`;
-        }).join('');
-
-        searchResults.innerHTML = `<ul>${dropdownHtml}</ul>`;
-      })
-      .catch(error => {
-        console.error(error);
-        searchResults.innerHTML = '<p>An error occurred while fetching search results.</p>';
-      });
-  });
-
-  searchResults.addEventListener('click', event => {
-    const target = event.target;
-
-    if (target.tagName === 'A') {
-      event.preventDefault();
-      const cardName = target.getAttribute('data-card-name');
-      addCardToPlayer(playerId, cardName);
-      searchInput.value = '';
-      searchResults.innerHTML = '';
-    }
+// Add event listeners for search fields
+document.querySelectorAll('.card-search').forEach((searchField) => {
+  searchField.addEventListener('input', (event) => {
+    searchCards(event.target.value, (cards) => {
+      document.querySelectorAll('.card-search').forEach((searchField) => {
+  searchField.addEventListener('input', (event) => {
+    searchCards(event.target.value, (cards) => {
+      updateAutosuggestDropdown(cards, event.target);
+    });
   });
 });
 
-const stackCardInput = document.getElementById('stack-card-input');
-const stackPlayerSelect = document.getElementById('stack-player-select');
-const addToStackButton = document.getElementById('add-to-stack');
-
-addToStackButton.addEventListener('click', () => {
-  const cardName = stackCardInput.value;
-  const playerId = stackPlayerSelect.value;
-  addCardToStack(cardName, playerId);
-  stackCardInput.value = '';
+    });
+  });
 });
+
+// Event listener for player search fields
+document.querySelectorAll('.player-container ~ .mt-2 .card-search').forEach((searchField) => {
+  searchField.addEventListener('input', (event) => {
+    searchCards(event.target.value, (cards) => {
+      updateAutosuggestDropdown(cards, event.target);
+    });
+  });
+});
+
+// Event listener for the stack search field
+const stackSearchField = document.querySelector('.stack-container + .mt-2 .card-search');
+stackSearchField.addEventListener('input', (event) => {
+  searchCards(event.target.value, (cards) => {
+    updateAutosuggestDropdown(cards, event.target, true); // Add an additional parameter to indicate this is for the stack
+  });
+});
+
+
+function updateAutosuggestDropdown(cards, searchField) {
+  // Remove any existing dropdown
+  const existingDropdown = searchField.parentElement.querySelector('.dropdown-menu');
+  if (existingDropdown) {
+    existingDropdown.remove();
+  }
+
+  // Create a new dropdown menu
+  const dropdownMenu = document.createElement('div');
+  dropdownMenu.className = 'dropdown-menu show';
+  searchField.parentElement.appendChild(dropdownMenu);
+
+  // Add the fetched cards to the dropdown menu
+  cards.forEach((card) => {
+    const dropdownItem = document.createElement('button');
+    dropdownItem.className = 'dropdown-item';
+    dropdownItem.type = 'button';
+    dropdownItem.textContent = card;
+    dropdownItem.addEventListener('click', () => {
+      const container = searchField.parentElement.previousElementSibling;
+      addCardToContainer(card, container);
+      dropdownMenu.remove();
+    });
+    dropdownMenu.appendChild(dropdownItem);
+  });
+}
+
+
+function searchCards(searchTerm, callback) {
+  if (searchTerm.length < 3) {
+    return;
+  }
+
+  fetch(`https://api.scryfall.com/cards/autocomplete?q=${searchTerm}`)
+    .then((response) => response.json())
+    .then((data) => {
+      callback(data.data);
+    })
+    .catch((error) => {
+      console.error('Error fetching card data:', error);
+    });
+}
+
+function addCardToContainer(cardName, container) {
+  // Add the card to the container
+}
+
+function resolveStack() {
+  // Implement stack resolution logic here
+  const resolvedStackLog = 'Example resolved stack log'; // Replace this with the actual resolved stack log
+
+  document.getElementById('stackLog').innerText = resolvedStackLog;
+  $('#stackLogModal').modal('show');
+}
+
+function addCardToContainer(cardName, container, playerNumber) {
+  const cardElement = document.createElement('div');
+  cardElement.className = 'card m-1 p-1';
+  cardElement.textContent = cardName;
+
+  // Add player number if provided
+  if (playerNumber) {
+    const playerLabel = document.createElement('small');
+    playerLabel.className = 'text-muted ml-1';
+    playerLabel.textContent = `(Player ${playerNumber})`;
+    cardElement.appendChild(playerLabel);
+  }
+
+  // Add a delete button to remove the card from the container
+  const deleteButton = document.createElement('button');
+  deleteButton.className = 'btn btn-sm btn-danger ml-2';
+  deleteButton.textContent = 'x';
+  deleteButton.addEventListener('click', () => {
+    cardElement.remove();
+  });
+
+  cardElement.appendChild(deleteButton);
+  container.appendChild(cardElement);
+}
+
+
+document.getElementById('resolveButton').addEventListener('click', resolveStack);

@@ -1,60 +1,92 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <title>MTG Stack Resolver</title>
-  </head>
-  <body>
-    <h1>MTG Stack Resolver</h1>
-
-<section class="player-battlefield" id="player1">
-  <h2>Player 1</h2>
-  <ul class="player-cards" id="player1-cards"></ul>
-  <div class="search-container">
-    <input type="text" placeholder="Add card...">
-    <div class="search-results"></div>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MTG Stack Resolver</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+  <div class="container">
+    <h1 class="mt-4">Stack Resolver</h1>
+    <div class="row mt-4">
+      <div class="col-md-3">
+  <h3>Player 1</h3>
+  <div class="player-container border p-2">
+    <!-- Player 1's cards go here -->
   </div>
-</section>
-<section class="player-battlefield" id="player2">
-  <h2>Player 2</h2>
-  <ul class="player-cards" id="player2-cards"></ul>
-  <div class="search-container">
-    <input type="text" placeholder="Add card...">
-    <div class="search-results"></div>
+  <div class="mt-2">
+    <input type="text" class="form-control card-search" placeholder="Search for a card" />
   </div>
-</section>
-<section class="player-battlefield" id="player3">
-  <h2>Player 3</h2>
-  <ul class="player-cards" id="player3-cards"></ul>
-  <div class="search-container">
-    <input type="text" placeholder="Add card...">
-    <div class="search-results"></div>
+</div>
+
+<div class="col-md-3">
+  <h3>Player 2</h3>
+  <div class="player-container border p-2">
+    <!-- Player 2's cards go here -->
   </div>
-</section>
-<section class="player-battlefield" id="player4">
-  <h2>Player 4</h2>
-  <ul class="player-cards" id="player4-cards"></ul>
-  <div class="search-container">
-    <input type="text" placeholder="Add card...">
-    <div class="search-results"></div>
+  <div class="mt-2">
+    <input type="text" class="form-control card-search" placeholder="Search for a card" />
   </div>
-</section>
+</div>
 
+<div class="col-md-3">
+  <h3>Player 3</h3>
+  <div class="player-container border p-2">
+    <!-- Player 3's cards go here -->
+  </div>
+  <div class="mt-2">
+    <input type="text" class="form-control card-search" placeholder="Search for a card" />
+  </div>
+</div>
 
+<div class="col-md-3">
+  <h3>Player 4</h3>
+  <div class="player-container border p-2">
+    <!-- Player 4's cards go here -->
+  </div>
+  <div class="mt-2">
+    <input type="text" class="form-control card-search" placeholder="Search for a card" />
+  </div>
+</div>
 
-    <div id="stack">
-      <h2>The Stack</h2>
-      <input type="text" id="stack-card-input" placeholder="Enter card name">
-      <select id="stack-player-select">
-        <option value="player1">Player 1</option>
-        <option value="player2">Player 2</option>
-        <option value="player3">Player 3</option>
-        <option value="player4">Player 4</option>
-      </select>
-      <button id="add-to-stack">Add to stack</button>
-      <button id="resolve-stack">Resolve</button>
-      <ul id="stack-cards"></ul>
     </div>
+    <div class="row mt-4">
+      <div class="col-md-12">
+        <h2>The Stack</h2>
+        <div class="col-md-12">
+  <input type="text" class="form-control card-search" placeholder="Search for a card" />
+  <div class="stack-container border p-2 mt-2">
+    <!-- Cards added to the stack go here -->
+  </div>
+</div>
 
-    <script src="app.js"></script>
-  </body>
+      </div>
+    </div>
+    <button id="resolveButton" class="btn btn-primary mt-4">Resolve</button>
+    <!-- Resolved Stack Log Modal -->
+<div class="modal fade" id="stackLogModal" tabindex="-1" role="dialog" aria-labelledby="stackLogModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="stackLogModalLabel">Resolved Stack Log</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <pre id="stackLog"></pre>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+  </div>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="app.js"></script>
+</body>
 </html>
