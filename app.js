@@ -36,12 +36,13 @@ document.querySelectorAll('.player-container ~ .mt-2 .card-search').forEach((sea
 const stackSearchField = document.querySelector('.stack-container + .mt-2 .card-search');
 stackSearchField.addEventListener('input', (event) => {
   searchCards(event.target.value, (cards) => {
-    updateAutosuggestDropdown(cards, event.target, true); // Add an additional parameter to indicate this is for the stack
+    updateAutosuggestDropdown(cards, event.target, { includePlayerSelection: true });
+ // Add an additional parameter to indicate this is for the stack
   });
 });
 
 
-function updateAutosuggestDropdown(cards, searchField) {
+function updateAutosuggestDropdown(cards, searchField, options = {}) {
   // Remove any existing dropdown
   const existingDropdown = searchField.parentElement.querySelector('.dropdown-menu');
   if (existingDropdown) {
@@ -59,14 +60,34 @@ function updateAutosuggestDropdown(cards, searchField) {
     dropdownItem.className = 'dropdown-item';
     dropdownItem.type = 'button';
     dropdownItem.textContent = card;
+
+    if (options.includePlayerSelection) {
+      // Add a player selection dropdown if requested
+      const playerSelect = document.createElement('select');
+      playerSelect.className = 'form-control form-control-sm ml-2 d-inline-block';
+      playerSelect.style.width = 'auto';
+
+      for (let i = 1; i <= 4; i++) {
+        const option = document.createElement('option');
+        option.value = i;
+        option.textContent = `Player ${i}`;
+        playerSelect.appendChild(option);
+      }
+
+      dropdownItem.appendChild(playerSelect);
+    }
+
     dropdownItem.addEventListener('click', () => {
       const container = searchField.parentElement.previousElementSibling;
-      addCardToContainer(card, container);
+      const playerNumber = options.includePlayerSelection ? dropdownItem.querySelector('select').value : undefined;
+      addCardToContainer(card, container, playerNumber);
       dropdownMenu.remove();
     });
+
     dropdownMenu.appendChild(dropdownItem);
   });
 }
+
 
 
 function searchCards(query, callback) {
