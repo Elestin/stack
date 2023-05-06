@@ -41,7 +41,6 @@ stackSearchField.addEventListener('input', (event) => {
   });
 });
 
-
 function updateAutosuggestDropdown(cards, searchField, options = {}) {
   // Remove any existing dropdown
   const existingDropdown = searchField.parentElement.querySelector('.dropdown-menu');
@@ -56,15 +55,18 @@ function updateAutosuggestDropdown(cards, searchField, options = {}) {
 
   // Add the fetched cards to the dropdown menu
   cards.forEach((card) => {
-    const dropdownItem = document.createElement('button');
-    dropdownItem.className = 'dropdown-item';
-    dropdownItem.type = 'button';
-    dropdownItem.textContent = card;
+    const dropdownItem = document.createElement('div');
+    dropdownItem.className = 'dropdown-item d-flex align-items-center';
+    
+    const cardNameElement = document.createElement('span');
+    cardNameElement.textContent = card;
+    cardNameElement.className = 'mr-2';
+    dropdownItem.appendChild(cardNameElement);
 
     if (options.includePlayerSelection) {
       // Add a player selection dropdown if requested
       const playerSelect = document.createElement('select');
-      playerSelect.className = 'form-control form-control-sm ml-2 d-inline-block';
+      playerSelect.className = 'form-control form-control-sm';
       playerSelect.style.width = 'auto';
 
       for (let i = 1; i <= 4; i++) {
@@ -77,7 +79,7 @@ function updateAutosuggestDropdown(cards, searchField, options = {}) {
       dropdownItem.appendChild(playerSelect);
     }
 
-    dropdownItem.addEventListener('click', () => {
+    cardNameElement.addEventListener('click', (event) => {
       const container = searchField.parentElement.previousElementSibling;
       const playerNumber = options.includePlayerSelection ? dropdownItem.querySelector('select').value : undefined;
       addCardToContainer(card, container, playerNumber);
@@ -87,6 +89,7 @@ function updateAutosuggestDropdown(cards, searchField, options = {}) {
     dropdownMenu.appendChild(dropdownItem);
   });
 }
+
 
 
 
@@ -144,7 +147,5 @@ function addCardToContainer(cardName, container, playerNumber) {
   cardElement.appendChild(deleteButton);
   container.appendChild(cardElement);
 }
-
-
 document.getElementById('resolveButton').addEventListener('click', resolveStack);
 });

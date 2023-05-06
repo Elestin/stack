@@ -23,3 +23,6 @@
   width: 100%;
   margin-bottom: 5px;
 }
+.dropdown-menu.show {
+  z-index: 9999;
+}
