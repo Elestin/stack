@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>MTG Stack Resolver</title>
+  </head>
+  <body>
+    <h1>MTG Stack Resolver</h1>
+
+<section class="player-battlefield" id="player1">
+  <h2>Player 1</h2>
+  <ul class="player-cards" id="player1-cards"></ul>
+  <div class="search-container">
+    <input type="text" placeholder="Add card...">
+    <div class="search-results"></div>
+  </div>
+</section>
+<section class="player-battlefield" id="player2">
+  <h2>Player 2</h2>
+  <ul class="player-cards" id="player2-cards"></ul>
+  <div class="search-container">
+    <input type="text" placeholder="Add card...">
+    <div class="search-results"></div>
+  </div>
+</section>
+<section class="player-battlefield" id="player3">
+  <h2>Player 3</h2>
+  <ul class="player-cards" id="player3-cards"></ul>
+  <div class="search-container">
+    <input type="text" placeholder="Add card...">
+    <div class="search-results"></div>
+  </div>
+</section>
+<section class="player-battlefield" id="player4">
+  <h2>Player 4</h2>
+  <ul class="player-cards" id="player4-cards"></ul>
+  <div class="search-container">
+    <input type="text" placeholder="Add card...">
+    <div class="search-results"></div>
+  </div>
+</section>
+
+
+
+    <div id="stack">
+      <h2>The Stack</h2>
+      <input type="text" id="stack-card-input" placeholder="Enter card name">
+      <select id="stack-player-select">
+        <option value="player1">Player 1</option>
+        <option value="player2">Player 2</option>
+        <option value="player3">Player 3</option>
+        <option value="player4">Player 4</option>
+      </select>
+      <button id="add-to-stack">Add to stack</button>
+      <button id="resolve-stack">Resolve</button>
+      <ul id="stack-cards"></ul>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
