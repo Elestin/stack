@@ -1,3 +1,8 @@
+document.addEventListener('DOMContentLoaded', () => {
+  // All the code in app.js should be inside this event listener
+
+
+
 // Initialize player containers and the stack container
 const playerContainers = document.querySelectorAll('.player-container');
 const stackContainer = document.querySelector('.stack-container');
@@ -64,20 +69,23 @@ function updateAutosuggestDropdown(cards, searchField) {
 }
 
 
-function searchCards(searchTerm, callback) {
-  if (searchTerm.length < 3) {
+function searchCards(query, callback) {
+  if (query.length < 3) {
+    callback([]);
     return;
   }
 
-  fetch(`https://api.scryfall.com/cards/autocomplete?q=${searchTerm}`)
+  fetch(`https://api.scryfall.com/cards/autocomplete?q=${encodeURIComponent(query)}`)
     .then((response) => response.json())
     .then((data) => {
       callback(data.data);
     })
     .catch((error) => {
-      console.error('Error fetching card data:', error);
+      console.error('Error fetching cards:', error);
+      callback([]);
     });
 }
+
 
 function addCardToContainer(cardName, container) {
   // Add the card to the container
@@ -118,3 +126,4 @@ function addCardToContainer(cardName, container, playerNumber) {
 
 
 document.getElementById('resolveButton').addEventListener('click', resolveStack);
+});
